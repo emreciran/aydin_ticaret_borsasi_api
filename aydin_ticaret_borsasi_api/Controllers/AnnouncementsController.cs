@@ -22,7 +22,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         public async Task<IActionResult> GetAllAnnouncement()
         {
             var announcements = await _announcementService.GetAllAnnouncement();
-            if (!announcements.Any()) return NotFound("Duyuru bulunamadı!");
+            if (!announcements.Any()) return Ok("Duyuru bulunamadı!");
 
             return Ok(announcements);
         }
@@ -31,7 +31,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         public async Task<IActionResult> GetAnnouncementById(int id)
         {
             var announcement = await _announcementService.GetAnnouncementById(id);
-            if (announcement == null) return NotFound("Duyuru bulunamadı!");
+            if (announcement == null) return Ok("Duyuru bulunamadı!");
 
             return Ok(announcement);
         }

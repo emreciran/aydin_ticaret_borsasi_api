@@ -141,7 +141,6 @@ namespace DataAccessLayer.Concrete
 
             if (result.Succeeded)
             {
-
                 var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                 var encodedEmailToken = Encoding.UTF8.GetBytes(confirmEmailToken);

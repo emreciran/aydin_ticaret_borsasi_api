@@ -18,7 +18,7 @@ namespace EntitiesLayer.Concrete
 
         public string Details { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public string? CreatedDate { get; set; }
 
         [Column(TypeName = "nvarchar(100)")]
         public string? ImageName { get; set; }
