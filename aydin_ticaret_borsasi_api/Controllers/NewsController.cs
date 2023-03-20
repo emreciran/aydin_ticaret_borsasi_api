@@ -19,10 +19,10 @@ namespace aydin_ticaret_borsasi_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllNews()
+        public async Task<IActionResult> GetAllNews(int page, float limit)
         {
-            var news = await _newsService.GetAllNews();
-            if (!news.Any()) return NotFound("Haber bulunamadı!");
+            var news = await _newsService.GetAllNews(page, limit);
+            if (news == null) return BadRequest();
 
             return Ok(news);
         }

@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
 using EntitiesLayer.Concrete;
+using Shared.ResponseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,9 @@ namespace BusinessLayer.Concrete
             await _announcementRepository.DeleteAnnouncement(id);
         }
 
-        public async Task<List<Announcement>> GetAllAnnouncement()
+        public async Task<AnnouncementResponse> GetAllAnnouncement(int page, float limit)
         {
-            return await _announcementRepository.GetAllAnnouncement();
+            return await _announcementRepository.GetAllAnnouncement(page, limit);
         }
 
         public async Task<Announcement> GetAnnouncementById(int id)

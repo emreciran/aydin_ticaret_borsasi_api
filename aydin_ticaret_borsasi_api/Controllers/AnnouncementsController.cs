@@ -19,19 +19,18 @@ namespace aydin_ticaret_borsasi_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAnnouncement()
+        public async Task<IActionResult> GetAllAnnouncement(int page, float limit)
         {
-            var announcements = await _announcementService.GetAllAnnouncement();
-            if (!announcements.Any()) return Ok("Duyuru bulunamadı!");
-
-            return Ok(announcements);
+            var announcement = await _announcementService.GetAllAnnouncement(page, limit);
+            if (announcement == null) return BadRequest();
+            return Ok(announcement);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAnnouncementById(int id)
         {
             var announcement = await _announcementService.GetAnnouncementById(id);
-            if (announcement == null) return Ok("Duyuru bulunamadı!");
+            if (announcement == null) return NotFound("Duyuru bulunamadı!");
 
             return Ok(announcement);
         }
@@ -64,7 +63,10 @@ namespace aydin_ticaret_borsasi_api.Controllers
 
             if (announcement != null)
             {
-                DeleteImage(announcement.ImageName);
+                if (announcement.ImageName != null)
+                {
+                    DeleteImage(announcement.ImageName);
+                }
                 await _announcementService.DeleteAnnouncement(id);
                 return Ok("Duyuru silindi");
             }

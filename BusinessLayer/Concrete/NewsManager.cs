@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
 using EntitiesLayer.Concrete;
+using Shared.ResponseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,6 @@ namespace BusinessLayer.Concrete
             await _newsRepository.DeleteNews(id);
         }
 
-        public async Task<List<News>> GetAllNews()
-        {
-            return await _newsRepository.GetAllNews();
-        }
-
         public async Task<News> GetNewsById(int id)
         {
             return await _newsRepository.GetNewsById(id);
@@ -41,6 +37,11 @@ namespace BusinessLayer.Concrete
         public async Task<News> UpdateNews(News news)
         {
             return await _newsRepository.UpdateNews(news);
+        }
+
+        public async Task<NewsResponse> GetAllNews(int page, float limit)
+        {
+            return await _newsRepository.GetAllNews(page, limit);
         }
     }
 }

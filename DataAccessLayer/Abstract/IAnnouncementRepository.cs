@@ -1,4 +1,5 @@
 ﻿using EntitiesLayer.Concrete;
+using Shared.ResponseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace DataAccessLayer.Abstract
 {
     public interface IAnnouncementRepository
     {
-        Task<List<Announcement>> GetAllAnnouncement();
+        Task<AnnouncementResponse> GetAllAnnouncement(int page, float limit);
 
         Task<Announcement> GetAnnouncementById(int id);
 

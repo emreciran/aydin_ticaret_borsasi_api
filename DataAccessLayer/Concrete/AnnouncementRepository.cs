@@ -2,6 +2,7 @@
 using DataAccessLayer.Context;
 using EntitiesLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
+using Shared.ResponseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +20,30 @@ namespace DataAccessLayer.Concrete
             this.db = db;
         }
 
-        public async Task<List<Announcement>> GetAllAnnouncement()
+        public async Task<AnnouncementResponse> GetAllAnnouncement(int page, float limit)
         {
-            return await db.Announcements.ToListAsync();
+            if (db.Announcements == null)
+                return null;
+
+            var pageResults = limit;
+            var pageCount = Math.Ceiling(db.Announcements.Count() / pageResults);
+
+            var announcements = await db.Announcements
+                .Skip((page - 1) * (int)pageResults)
+                .Take((int)pageResults)
+                .ToListAsync();
+
+            var totalCount = db.Announcements.Count();
+
+            var response = new AnnouncementResponse
+            {
+                Announcements = announcements,
+                CurrentPage = page,
+                Pages = (int)pageCount,
+                Total = totalCount,
+            };
+
+            return response;
         }
 
         public async Task<Announcement> GetAnnouncementById(int id)

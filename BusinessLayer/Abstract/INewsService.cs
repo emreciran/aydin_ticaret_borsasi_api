@@ -1,4 +1,5 @@
 ﻿using EntitiesLayer.Concrete;
+using Shared.ResponseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace BusinessLayer.Abstract
 {
     public interface INewsService
     {
-        Task<List<News>> GetAllNews();
+        Task<NewsResponse> GetAllNews(int page, float limit);
 
         Task<News> GetNewsById(int id);
 
