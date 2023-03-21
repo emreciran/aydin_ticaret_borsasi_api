@@ -1,7 +1,7 @@
 ﻿using DataAccessLayer.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Shared.ResponseModels;
+using Shared.ViewModels;
 
 namespace aydin_ticaret_borsasi_api.Controllers
 {

@@ -39,6 +39,7 @@ namespace DataAccessLayer.Concrete
                 throw new NullReferenceException("Login model is null!");
 
             var user = await _userManager.FindByEmailAsync(model.Email);
+            var userDetails = await db.Users.Where(x => x.Email == model.Email).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -66,6 +67,15 @@ namespace DataAccessLayer.Concrete
                 return new UserManagerResponse
                 {
                     Message = "Giriş yapmak için email adresinizi doğrulamanız gerekmektedir!",
+                    IsSuccess = false,
+                };
+            }
+
+            if (!userDetails.Status)
+            {
+                return new UserManagerResponse
+                {
+                    Message = "Giriş yapmak için hesabınız yetkililer tarafından onaylanmalıdır!",
                     IsSuccess = false,
                 };
             }
@@ -135,6 +145,7 @@ namespace DataAccessLayer.Concrete
                 Email = model.Email,
                 Username = model.Username,
                 CreatedDate = DateTime.Now,
+                Status = false
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);

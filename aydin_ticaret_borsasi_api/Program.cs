@@ -64,6 +64,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 builder.Services.AddScoped<IAuthService, AuthManager>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
+builder.Services.AddScoped<IUserService, UserManager>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddScoped<IAnnouncementService, AnnouncementManager>();
 builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
 

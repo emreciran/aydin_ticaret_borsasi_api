@@ -21,5 +21,7 @@ namespace EntitiesLayer.Concrete
         public string? Username { get; set; }
 
         public DateTime? CreatedDate { get; set; }
+
+        public bool Status { get; set; }
     }
 }

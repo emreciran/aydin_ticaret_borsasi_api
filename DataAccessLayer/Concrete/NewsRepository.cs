@@ -41,6 +41,7 @@ namespace DataAccessLayer.Concrete
             var pageCount = Math.Ceiling(db.News.Count() / pageResult);
 
             var news = await db.News
+                .OrderByDescending(x => x.ID)
                 .Skip((page - 1) * (int)pageResult)
                 .Take((int)pageResult)
                 .ToListAsync();

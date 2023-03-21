@@ -2,6 +2,7 @@
 using EntitiesLayer.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IO.Pipes;
 
 namespace aydin_ticaret_borsasi_api.Controllers
 {
@@ -50,8 +51,13 @@ namespace aydin_ticaret_borsasi_api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAnnouncement(Announcement announcement)
+        public async Task<IActionResult> UpdateAnnouncement([FromForm]Announcement announcement)
         {
+            if (announcement.ImageFile != null)
+            {
+                announcement.ImageName = await SaveImage(announcement.ImageFile);
+            }
+
             var updatedAnnouncement = await _announcementService.UpdateAnnouncement(announcement);
             return Ok(updatedAnnouncement);
         }

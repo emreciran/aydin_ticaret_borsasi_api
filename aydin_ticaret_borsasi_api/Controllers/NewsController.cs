@@ -51,8 +51,13 @@ namespace aydin_ticaret_borsasi_api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateNews(News news)
+        public async Task<IActionResult> UpdateNews([FromForm]News news)
         {
+            if (news.ImageFile != null)
+            {
+                news.ImageName = await SaveImage(news.ImageFile);
+            }
+
             var updatedNews = await _newsService.UpdateNews(news);
             return Ok(updatedNews);
         }
