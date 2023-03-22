@@ -20,6 +20,8 @@ namespace EntitiesLayer.Concrete
 
         public string? Details { get; set; }
 
+        public string? Link { get; set; }
+
         [Column(TypeName = "nvarchar(100)")]
         public string? ImageName { get; set; }
 

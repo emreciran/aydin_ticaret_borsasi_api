@@ -27,6 +27,9 @@ namespace Shared.ViewModels
         public string Surname { get; set; }
 
         [Required]
+        public bool Status { get; set; }
+
+        [Required]
         [StringLength(50, MinimumLength = 4)]
         public string Password { get; set; }
 

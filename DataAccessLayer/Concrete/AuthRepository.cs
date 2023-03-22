@@ -145,7 +145,7 @@ namespace DataAccessLayer.Concrete
                 Email = model.Email,
                 Username = model.Username,
                 CreatedDate = DateTime.Now,
-                Status = false
+                Status = model.Status
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
