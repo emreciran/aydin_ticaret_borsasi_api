@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shared.ViewModels
 {
-    public class RegisterViewModel
+    public class CreateUserViewModel
     {
         [Required]
         [StringLength(50)]
@@ -36,8 +36,5 @@ namespace Shared.ViewModels
         [StringLength(50, MinimumLength = 4)]
         public string Password { get; set; }
 
-        [Required]
-        [StringLength(50, MinimumLength = 4)]
-        public string ConfirmPassword { get; set; }
     }
 }

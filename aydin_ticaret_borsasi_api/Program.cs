@@ -58,6 +58,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Password.RequireLowercase = true;
     options.Password.RequiredLength = 4;
 })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -72,6 +73,9 @@ builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
 
 builder.Services.AddScoped<INewsService, NewsManager>();
 builder.Services.AddScoped<INewsRepository, NewsRepository>();
+
+builder.Services.AddScoped<IRoleService, RoleManager>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 builder.Services.AddScoped<IMailService, MailManager>();
 builder.Services.AddScoped<IMailRepository, MailRepository>();

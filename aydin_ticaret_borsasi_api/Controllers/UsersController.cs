@@ -1,12 +1,16 @@
 ﻿using BusinessLayer.Abstract;
 using EntitiesLayer.Concrete;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared.ViewModels;
 
 namespace aydin_ticaret_borsasi_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
@@ -23,6 +27,15 @@ namespace aydin_ticaret_borsasi_api.Controllers
             if(users == null) return BadRequest();
 
             return Ok(users);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(CreateUserViewModel model)
+        {
+            var result = await _userService.CreateUser(model);
+            if (result == null) return BadRequest(result);
+
+            return Ok(result);
         }
 
         [HttpPut]

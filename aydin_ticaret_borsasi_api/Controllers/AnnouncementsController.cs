@@ -1,5 +1,7 @@
 ﻿using BusinessLayer.Abstract;
 using EntitiesLayer.Concrete;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Pipes;
@@ -8,6 +10,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AnnouncementsController : ControllerBase
     {
         private IAnnouncementService _announcementService;
@@ -20,6 +23,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllAnnouncement(int page, float limit)
         {
             var announcement = await _announcementService.GetAllAnnouncement(page, limit);
@@ -28,6 +32,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAnnouncementById(int id)
         {
             var announcement = await _announcementService.GetAnnouncementById(id);

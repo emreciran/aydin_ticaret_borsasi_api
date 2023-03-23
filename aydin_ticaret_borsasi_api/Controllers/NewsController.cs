@@ -1,5 +1,7 @@
 ﻿using BusinessLayer.Abstract;
 using EntitiesLayer.Concrete;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +9,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class NewsController : ControllerBase
     {
         private INewsService _newsService;
@@ -19,6 +22,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllNews(int page, float limit)
         {
             var news = await _newsService.GetAllNews(page, limit);
@@ -28,6 +32,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetNewsById(int id)
         {
             var news = await _newsService.GetNewsById(id);

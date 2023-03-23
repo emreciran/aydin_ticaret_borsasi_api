@@ -2,6 +2,7 @@
 using DataAccessLayer.Abstract;
 using EntitiesLayer.Concrete;
 using Shared.ResponseModels;
+using Shared.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,11 @@ namespace BusinessLayer.Concrete
         public UserManager(IUserRepository userRepository)
         {
             _userRepository = userRepository;
+        }
+
+        public async Task<UserManagerResponse> CreateUser(CreateUserViewModel model)
+        {
+            return await _userRepository.CreateUser(model);
         }
 
         public async Task<UsersResponse> GetAllUsers(int page, float limit)

@@ -21,13 +21,15 @@ namespace DataAccessLayer.Concrete
     public class AuthRepository : IAuthRepository
     {
         private UserManager<IdentityUser> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
         private ApplicationDbContext db;
         private IConfiguration _configuration;
         private IMailRepository _mailRepository;
 
-        public AuthRepository(UserManager<IdentityUser> userManager, ApplicationDbContext db, IConfiguration configuration, IMailRepository mailRepository)
+        public AuthRepository(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db, IConfiguration configuration, IMailRepository mailRepository)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             this.db = db;
             _configuration = configuration;
             _mailRepository = mailRepository;
@@ -138,12 +140,15 @@ namespace DataAccessLayer.Concrete
                 UserName = model.Username
             };
 
+            var defaultRole = "Yazar";
+
             var userDetails = new User
             {
                 Name = model.Name,
                 Surname = model.Surname,
                 Email = model.Email,
                 Username = model.Username,
+                Role = defaultRole,
                 CreatedDate = DateTime.Now,
                 Status = model.Status
             };
@@ -152,6 +157,8 @@ namespace DataAccessLayer.Concrete
 
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, defaultRole);
+
                 var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                 var encodedEmailToken = Encoding.UTF8.GetBytes(confirmEmailToken);
@@ -301,6 +308,25 @@ namespace DataAccessLayer.Concrete
 
             var userClaims = await _userManager.GetClaimsAsync(user);
             claims.AddRange(userClaims);
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            foreach (var userRole in userRoles)
+            {
+                var role = await _roleManager.FindByNameAsync(userRole);
+
+                if (role != null)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, userRole));
+
+                    var roleClaims = await _roleManager.GetClaimsAsync(role);
+
+                    foreach (var roleClaim in roleClaims)
+                    {
+                        claims.Add(roleClaim);
+                    }
+                }
+            }
 
             return claims;
         }
