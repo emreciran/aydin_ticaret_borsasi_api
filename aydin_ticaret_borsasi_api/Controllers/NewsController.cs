@@ -74,7 +74,10 @@ namespace aydin_ticaret_borsasi_api.Controllers
 
             if (news != null)
             {
-                DeleteImage(news.ImageName);
+                if (news.ImageName != null)
+                {
+                    DeleteImage(news.ImageName);
+                }
                 await _newsService.DeleteNews(id);
                 return Ok("Haber Silindi");
             }

@@ -27,9 +27,6 @@ namespace Shared.ViewModels
         public string Surname { get; set; }
 
         [Required]
-        public string Role { get; set; }
-
-        [Required]
         public bool Status { get; set; }
 
         [Required]

@@ -101,11 +101,8 @@ namespace DataAccessLayer.Concrete
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, model.Role);
-
                 db.Users.Add(userDetails);
                 await db.SaveChangesAsync();
-
-                var userRoles = await _userManager.GetRolesAsync(user);
 
                 return new UserManagerResponse
                 {
@@ -124,6 +121,14 @@ namespace DataAccessLayer.Concrete
 
         public async Task<User> UpdateUser(User user)
         {
+            var userData = await _userManager.FindByEmailAsync(user.Email);
+
+            var userDetails = await db.Users.FirstOrDefaultAsync(x => x.Email == user.Email);
+
+            var deletedRole = await _userManager.RemoveFromRoleAsync(userData, userDetails.Role);
+
+            var result = await _userManager.AddToRoleAsync(userData, user.Role);
+
             db.Users.Update(user);
             await db.SaveChangesAsync();
             return user;

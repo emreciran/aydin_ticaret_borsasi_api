@@ -16,6 +16,10 @@ namespace EntitiesLayer.Concrete
 
         public string? Title { get; set; }
 
+        public string CreatedBy { get; set; }
+
+        public string UpdatedBy { get; set; }
+
         public string? CreatedDate { get; set; }
 
         public string? Details { get; set; }
