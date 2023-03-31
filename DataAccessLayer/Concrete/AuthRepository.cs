@@ -149,7 +149,7 @@ namespace DataAccessLayer.Concrete
                 Email = model.Email,
                 Username = model.Username,
                 Role = defaultRole,
-                CreatedDate = DateTime.Now,
+                CreatedDate = model.CreatedDate,
                 Status = model.Status
             };
 

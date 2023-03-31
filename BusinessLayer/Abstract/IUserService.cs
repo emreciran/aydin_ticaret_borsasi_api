@@ -13,8 +13,14 @@ namespace BusinessLayer.Abstract
     {
         Task<UsersResponse> GetAllUsers(int page, float limit);
 
+        Task<User> GetUserById(int id);
+
         Task<UserManagerResponse> CreateUser(CreateUserViewModel model);
 
         Task<User> UpdateUser(User user);
+
+        Task<User> UpdateUserInfo(User user);
+
+        Task<UserManagerResponse> ChangeUserPassword(ChangePasswordViewModel model);
     }
 }

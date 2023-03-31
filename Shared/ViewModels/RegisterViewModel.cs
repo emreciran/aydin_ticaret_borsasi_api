@@ -30,6 +30,9 @@ namespace Shared.ViewModels
         public bool Status { get; set; }
 
         [Required]
+        public string CreatedDate { get; set; }
+
+        [Required]
         [StringLength(50, MinimumLength = 4)]
         public string Password { get; set; }
 

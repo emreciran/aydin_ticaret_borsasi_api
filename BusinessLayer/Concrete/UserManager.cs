@@ -20,6 +20,11 @@ namespace BusinessLayer.Concrete
             _userRepository = userRepository;
         }
 
+        public async Task<UserManagerResponse> ChangeUserPassword(ChangePasswordViewModel model)
+        {
+            return await _userRepository.ChangeUserPassword(model);
+        }
+
         public async Task<UserManagerResponse> CreateUser(CreateUserViewModel model)
         {
             return await _userRepository.CreateUser(model);
@@ -30,9 +35,19 @@ namespace BusinessLayer.Concrete
             return await _userRepository.GetAllUsers(page, limit);
         }
 
+        public async Task<User> GetUserById(int id)
+        {
+            return await _userRepository.GetUserById(id);
+        }
+
         public async Task<User> UpdateUser(User user)
         {
             return await _userRepository.UpdateUser(user);
+        }
+
+        public async Task<User> UpdateUserInfo(User user)
+        {
+            return await _userRepository.UpdateUserInfo(user);
         }
     }
 }

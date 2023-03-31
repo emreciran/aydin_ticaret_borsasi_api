@@ -24,9 +24,18 @@ namespace aydin_ticaret_borsasi_api.Controllers
         public async Task<IActionResult> GetAllUsers(int page, float limit)
         {
             var users = await _userService.GetAllUsers(page, limit);
-            if(users == null) return BadRequest();
+            if (users == null) return BadRequest();
 
             return Ok(users);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var user = await _userService.GetUserById(id);  
+            if (user == null) return BadRequest();
+
+            return Ok(user);
         }
 
         [HttpPost]
@@ -45,6 +54,25 @@ namespace aydin_ticaret_borsasi_api.Controllers
             if (updatedUser == null) return BadRequest();
 
             return Ok(updatedUser);
+        }
+
+        [HttpPut("UpdateUserInfo")]
+        public async Task<IActionResult> UpdateUserInfo(User user)
+        {
+            var updatedUser = await _userService.UpdateUserInfo(user);
+            if (updatedUser == null) return BadRequest();
+
+            return Ok(updatedUser);
+        }
+
+        [HttpPut("UpdatePassword")]
+        public async Task<IActionResult> UpdatePassword(ChangePasswordViewModel model)
+        {
+            var response = await _userService.ChangeUserPassword(model);
+
+            if (response.IsSuccess) return Ok(response);
+
+            return BadRequest(response);
         }
     }
 }

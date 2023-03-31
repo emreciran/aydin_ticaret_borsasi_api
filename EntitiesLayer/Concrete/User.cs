@@ -20,9 +20,11 @@ namespace EntitiesLayer.Concrete
 
         public string? Username { get; set; }
 
-        public string Role { get; set; }
+        public string? Role { get; set; }
 
-        public DateTime? CreatedDate { get; set; }
+        public string? CreatedDate { get; set; }
+
+        public string? UpdatedDate { get; set; }
 
         public bool Status { get; set; }
     }

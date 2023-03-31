@@ -53,6 +53,15 @@ namespace DataAccessLayer.Concrete
             return response;
         }
 
+        public async Task<User> GetUserById(int id)
+        {
+            var userDetails = await db.Users.AsNoTracking().FirstOrDefaultAsync(x => x.USER_ID == id);
+
+            if (userDetails == null) return null;
+
+            return userDetails;
+        }
+
         public async Task<UserManagerResponse> CreateUser(CreateUserViewModel model)
         {
             if (model == null)
@@ -92,7 +101,7 @@ namespace DataAccessLayer.Concrete
                 Email = model.Email,
                 Username = model.Username,
                 Role = model.Role,
-                CreatedDate = DateTime.Now,
+                CreatedDate = model.CreatedDate,
                 Status = model.Status
             };
 
@@ -123,12 +132,67 @@ namespace DataAccessLayer.Concrete
         {
             var userData = await _userManager.FindByEmailAsync(user.Email);
 
-            var userDetails = await db.Users.FirstOrDefaultAsync(x => x.Email == user.Email);
+            var userDetails = await db.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == user.Email);
 
             var deletedRole = await _userManager.RemoveFromRoleAsync(userData, userDetails.Role);
 
             var result = await _userManager.AddToRoleAsync(userData, user.Role);
 
+            db.Users.Update(user);
+            await db.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<UserManagerResponse> ChangeUserPassword(ChangePasswordViewModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if(user == null)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Kullanıcı bulunamadı!",
+                };
+            }
+
+            if (!await _userManager.CheckPasswordAsync(user, model.OldPassword))
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Mevcut şifreniz hatalı!"
+                };
+            }
+
+            if(model.ConfirmPassword != model.NewPassword)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Onay şifreniz hatalı!"
+                };
+            }
+
+            if (model.OldPassword == model.NewPassword)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Yeni şifreniz eski şifrenizden farklı olmalıdır"
+                };
+            }
+
+            await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Şifreniz başarıyla değiştirildi!"
+            };
+        }
+
+        public async Task<User> UpdateUserInfo(User user)
+        {
             db.Users.Update(user);
             await db.SaveChangesAsync();
             return user;

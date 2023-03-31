@@ -18,11 +18,13 @@ namespace EntitiesLayer.Concrete
 
         public string Details { get; set; }
 
-        public string CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = string.Empty;
 
-        public string UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; } = string.Empty;
 
-        public string? CreatedDate { get; set; }
+        public string CreatedDate { get; set; } = string.Empty;
+
+        public string UpdatedDate { get; set; } = string.Empty;
 
         [Column(TypeName = "nvarchar(100)")]
         public string? ImageName { get; set; }
