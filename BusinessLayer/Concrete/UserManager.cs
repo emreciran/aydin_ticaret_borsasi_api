@@ -45,9 +45,9 @@ namespace BusinessLayer.Concrete
             return await _userRepository.UpdateUser(user);
         }
 
-        public async Task<User> UpdateUserInfo(User user)
+        public async Task<User> UpdateUserInfo(UpdateInfoViewModel model)
         {
-            return await _userRepository.UpdateUserInfo(user);
+            return await _userRepository.UpdateUserInfo(model);
         }
     }
 }

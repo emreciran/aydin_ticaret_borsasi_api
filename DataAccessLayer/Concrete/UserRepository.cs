@@ -191,11 +191,15 @@ namespace DataAccessLayer.Concrete
             };
         }
 
-        public async Task<User> UpdateUserInfo(User user)
+        public async Task<User> UpdateUserInfo(UpdateInfoViewModel model)
         {
-            db.Users.Update(user);
+            var userDetails = await db.Users.AsNoTracking().FirstOrDefaultAsync(x => x.USER_ID == model.Id);
+
+            userDetails.Name = model.Name;
+            userDetails.Surname = model.Surname;
+
             await db.SaveChangesAsync();
-            return user;
+            return userDetails;
         }
     }
 }

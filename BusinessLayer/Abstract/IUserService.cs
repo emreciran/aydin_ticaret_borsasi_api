@@ -19,7 +19,7 @@ namespace BusinessLayer.Abstract
 
         Task<User> UpdateUser(User user);
 
-        Task<User> UpdateUserInfo(User user);
+        Task<User> UpdateUserInfo(UpdateInfoViewModel model);
 
         Task<UserManagerResponse> ChangeUserPassword(ChangePasswordViewModel model);
     }

@@ -88,9 +88,10 @@ namespace DataAccessLayer.Concrete
             {
                 Token = jwtToken.Token,
                 Success = jwtToken.Success,
-                Errors = jwtToken.Errors
+                Errors = jwtToken.Errors,
+                Claims = jwtToken.Claims,
             };
-
+            
             return new UserManagerResponse
             {
                 Message = "",
@@ -288,7 +289,8 @@ namespace DataAccessLayer.Concrete
             return new AuthResult
             {
                 Token = jwtToken,
-                Success = true
+                Success = true,
+                Claims = claims
             };
         }
 

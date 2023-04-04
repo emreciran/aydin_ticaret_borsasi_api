@@ -1,7 +1,10 @@
 ﻿using DataAccessLayer.Abstract;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.ViewModels;
+using System.Security.Claims;
 
 namespace aydin_ticaret_borsasi_api.Controllers
 {
@@ -53,13 +56,25 @@ namespace aydin_ticaret_borsasi_api.Controllers
                         IsEssential = true,
                     });
 
+                    //var claimsIdentity = new ClaimsIdentity(result.AuthResult.Claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    //await HttpContext.SignInAsync(
+                    //CookieAuthenticationDefaults.AuthenticationScheme, 
+                    //new ClaimsPrincipal(claimsIdentity),
+                    //new AuthenticationProperties
+                    //{
+                    //    IsPersistent = true,
+                    //    AllowRefresh = true,
+                    //    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                    //});
+
                     return Ok(result);
                 }
 
                 return BadRequest(result);
             }
 
-            return BadRequest("");
+            return BadRequest();
         }
 
         [HttpGet("ConfirmEmail")]

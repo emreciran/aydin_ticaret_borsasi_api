@@ -59,7 +59,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         [HttpPut("UpdateUserInfo")]
         public async Task<IActionResult> UpdateUserInfo(UpdateInfoViewModel model)
         {
-            var updatedUser = await _userService.UpdateUserInfo(user);
+            var updatedUser = await _userService.UpdateUserInfo(model);
             if (updatedUser == null) return BadRequest();
 
             return Ok(updatedUser);

@@ -3,6 +3,7 @@ using BusinessLayer.Concrete;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Context;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +51,7 @@ builder.Services.AddAuthentication(auth =>
 {
     options.SaveToken = true;
     options.TokenValidationParameters = tokenValidationParams;
-});
+}).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
@@ -90,7 +91,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(x => x
-    .WithOrigins(new[] { "http://localhost:19000", "http://localhost:3000" })
+    .WithOrigins(new[] { "http://localhost:19000", "http://localhost:3000", "https://aydin-ticaret-borsasi.vercel.app" })
     .AllowAnyMethod()
     .AllowCredentials()
     .AllowAnyHeader());
