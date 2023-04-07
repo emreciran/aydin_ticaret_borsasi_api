@@ -19,5 +19,7 @@ namespace DataAccessLayer.Abstract
         Task<UserManagerResponse> ForgotPassword(string email);
 
         Task<UserManagerResponse> ResetPassword(ResetPasswordViewModel model);
+
+        Task<UserManagerResponse> SendConfirmEmail(string email);
     }
 }

@@ -84,11 +84,9 @@ builder.Services.AddScoped<IMailRepository, MailRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors(x => x
     .WithOrigins(new[] { "http://localhost:19000", "http://localhost:3000", "https://aydin-ticaret-borsasi.vercel.app" })
@@ -96,11 +94,11 @@ app.UseCors(x => x
     .AllowCredentials()
     .AllowAnyHeader());
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Images")),
-    RequestPath = "/Images"
-});
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Images")),
+//    RequestPath = "/Images"
+//});
 
 app.UseHttpsRedirection();
 

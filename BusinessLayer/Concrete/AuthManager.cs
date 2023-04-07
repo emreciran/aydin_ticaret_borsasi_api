@@ -43,5 +43,10 @@ namespace BusinessLayer.Concrete
         {
             return await _authRepository.ResetPassword(model);
         }
+
+        public async Task<UserManagerResponse> SendConfirmEmail(string email)
+        {
+            return await _authRepository.SendConfirmEmail(email);
+        }
     }
 }

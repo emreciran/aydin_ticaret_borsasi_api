@@ -89,7 +89,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
 
             if (result.IsSuccess)
             {
-                return Redirect(_configuration["ClientURL"] + "/auth/login?confirmEmail=" + token);
+                return Redirect(_configuration["ClientURL"] + "/sign-in?confirmEmail=" + token);
             }
 
             return BadRequest(result);
@@ -111,6 +111,16 @@ namespace aydin_ticaret_borsasi_api.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             var response = await _authRepository.ResetPassword(model);
+
+            if (response.IsSuccess) return Ok(response);
+
+            return BadRequest(response);
+        }
+
+        [HttpPost("SendConfirmEmail")]
+        public async Task<IActionResult> SendConfirmEmail(string email)
+        {
+            var response = await _authRepository.SendConfirmEmail(email);
 
             if (response.IsSuccess) return Ok(response);
 

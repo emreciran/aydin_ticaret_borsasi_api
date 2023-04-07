@@ -160,18 +160,7 @@ namespace DataAccessLayer.Concrete
             {
                 await _userManager.AddToRoleAsync(user, defaultRole);
 
-                var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                var encodedEmailToken = Encoding.UTF8.GetBytes(confirmEmailToken);
-                var validEmailToken = WebEncoders.Base64UrlEncode(encodedEmailToken);
-
-                string url = $"{_configuration["AppURL"]}/api/auth/confirmemail?userid={user.Id}&token={validEmailToken}";
-
-                string subject = "E postanızı onaylayınız";
-                string body = $"<h1>Aydın Ticaret Borsası</h1>" +
-                    $"<p>E postanızı onaylamak için lütfen <a href='{url}'>Tıklayınız</a></p>";
-
-                await _mailRepository.SendEmailAsync(user.Email, subject, body);
+                await SendConfirmEmail(model.Email);
 
                 db.Users.Add(userDetails);
                 await db.SaveChangesAsync();
@@ -209,7 +198,7 @@ namespace DataAccessLayer.Concrete
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            string url = $"{_configuration["ClientURL"]}/auth/reset_password?email={email}&token={validToken}";
+            string url = $"{_configuration["ClientURL"]}/reset-password?email={email}&token={validToken}";
 
             string subject = "Şifre Yenileme";
             string body = $"<h1>Aydın Ticaret Borsası</h1>" +
@@ -228,7 +217,7 @@ namespace DataAccessLayer.Concrete
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if(user == null )
+            if(user == null)
             {
                 return new UserManagerResponse
                 {
@@ -364,6 +353,30 @@ namespace DataAccessLayer.Concrete
                 IsSuccess = false,
                 Message = "Email onaylanmadı!",
                 Errors = result.Errors.Select(e => e.Description)
+            };
+        }
+
+        public async Task<UserManagerResponse> SendConfirmEmail(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            var encodedEmailToken = Encoding.UTF8.GetBytes(confirmEmailToken);
+            var validEmailToken = WebEncoders.Base64UrlEncode(encodedEmailToken);
+
+            string url = $"{_configuration["AppURL"]}/api/auth/confirmemail?userid={user.Id}&token={validEmailToken}";
+
+            string subject = "E postanızı onaylayınız";
+            string body = $"<h1>Aydın Ticaret Borsası</h1>" +
+                $"<p>E postanızı onaylamak için lütfen <a href='{url}'>Tıklayınız</a></p>";
+
+           await _mailRepository.SendEmailAsync(user.Email, subject, body);
+
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Email onayı hesabınıza gönderildi."
             };
         }
     }
