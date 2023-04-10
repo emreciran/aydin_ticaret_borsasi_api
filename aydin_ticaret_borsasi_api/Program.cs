@@ -88,8 +88,14 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("Access-Control-Allow-Private-Network", "true");
+    await next();
+});
+
 app.UseCors(x => x
-    .WithOrigins(new[] { "http://localhost:19000", "http://localhost:3000", "https://aydin-ticaret-borsasi.vercel.app" })
+    .WithOrigins(new[] { "http://localhost:19000", "http://zeysoft.com", "https://zeysoft.com", "http://localhost:3000", "https://aydin-ticaret-borsasi.vercel.app" })
     .AllowAnyMethod()
     .AllowCredentials()
     .AllowAnyHeader());
