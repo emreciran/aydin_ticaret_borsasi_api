@@ -46,7 +46,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         {
             if (announcement.ImageFile != null)
             {
-                announcement.ImageName = await SaveImage(announcement.ImageFile);
+                announcement.ImageName = await SaveImage2(announcement.ImageFile);
             }
 
             var createdAnnouncement = await _announcementService.NewAnnouncement(announcement);
@@ -94,6 +94,20 @@ namespace aydin_ticaret_borsasi_api.Controllers
             using (var fileStream = new FileStream(imagePath, FileMode.Create))
             {
                 await file.CopyToAsync(fileStream);
+            }
+            return imageName;
+        }
+        [NonAction]
+        public async Task<string> SaveImage2(IFormFile file)
+        {
+            string imageName = new string(Path.GetFileNameWithoutExtension(file.FileName).Take(10).ToArray()).Replace(' ', '-');
+            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(file.FileName);
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "Announcements", file.FileName);
+
+     
+            using (var stream = System.IO.File.Create(path))
+            {
+                await file.CopyToAsync(stream);
             }
             return imageName;
         }
