@@ -2,19 +2,21 @@
 using EntitiesLayer.Concrete;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Pipes;
 
 namespace aydin_ticaret_borsasi_api.Controllers
 {
+    //[EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AnnouncementsController : ControllerBase
     {
         private IAnnouncementService _announcementService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        public static IWebHostEnvironment _webHostEnvironment;
 
         public AnnouncementsController(IAnnouncementService announcementService, IWebHostEnvironment webHostEnvironment)
         {
@@ -24,7 +26,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllAnnouncement(int page, float limit)
+        public async Task<IActionResult> GetAllAnnouncement(int page = 1, float limit = 5)
         {
             var announcement = await _announcementService.GetAllAnnouncement(page, limit);
             if (announcement == null) return BadRequest();
@@ -42,7 +44,8 @@ namespace aydin_ticaret_borsasi_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewAnnouncement([FromForm] Announcement announcement)
+        [AllowAnonymous]
+        public async Task<IActionResult> NewAnnouncement([FromForm]Announcement announcement)
         {
             if (announcement.ImageFile != null)
             {
@@ -60,7 +63,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         {
             if (announcement.ImageFile != null)
             {
-                announcement.ImageName = await SaveImage(announcement.ImageFile);
+                announcement.ImageName = await SaveImage2(announcement.ImageFile);
             }
 
             var updatedAnnouncement = await _announcementService.UpdateAnnouncement(announcement);
@@ -97,19 +100,20 @@ namespace aydin_ticaret_borsasi_api.Controllers
             }
             return imageName;
         }
+
         [NonAction]
         public async Task<string> SaveImage2(IFormFile file)
         {
-            string imageName = new string(Path.GetFileNameWithoutExtension(file.FileName).Take(10).ToArray()).Replace(' ', '-');
-            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(file.FileName);
-            string path = Path.Combine(_webHostEnvironment.WebRootPath, "Announcements", file.FileName);
+            string trustedFileNameForFileStorage;
+            var untrustedFileName = new string(Path.GetFileNameWithoutExtension(file.FileName).Take(10).ToArray()).Replace(' ', '-');
 
-     
-            using (var stream = System.IO.File.Create(path))
-            {
-                await file.CopyToAsync(stream);
-            }
-            return imageName;
+            trustedFileNameForFileStorage = untrustedFileName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(file.FileName);
+            var path = Path.Combine(_webHostEnvironment.ContentRootPath, "Images/Announcements", trustedFileNameForFileStorage);
+
+            await using FileStream stream = new(path, FileMode.Create);
+            await file.CopyToAsync(stream);
+
+            return trustedFileNameForFileStorage;
         }
 
         [NonAction]

@@ -16,6 +16,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:19000", "http://localhost:3000", "https://zeysoft.com", "http://zeysoft.com", "https://aydin-ticaret-borsasi.vercel.app")
+            .WithMethods("POST", "PUT", "DELETE", "GET")
+            .AllowCredentials()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -88,19 +99,36 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseCors(x => x
-    .WithOrigins(new[] { "http://localhost:19000", "http://zeysoft.com", "https://zeysoft.com", "http://localhost:3000", "https://aydin-ticaret-borsasi.vercel.app" })
-    .AllowAnyMethod()
-    .AllowCredentials()
-    .AllowAnyHeader());
 
-//app.UseStaticFiles(new StaticFileOptions
+//app.UseStaticFiles(new StaticFileOptions()
 //{
 //    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Images")),
 //    RequestPath = "/Images"
 //});
 
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(Directory.GetCurrentDirectory(), @"Images", "Announcements")),
+    RequestPath = new PathString("/Images/Announcements")
+});
+
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(Directory.GetCurrentDirectory(), @"Images", "News")),
+    RequestPath = new PathString("/Images/News")
+});
+
+app.UseDirectoryBrowser();
+
 app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseCors("MyPolicy");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

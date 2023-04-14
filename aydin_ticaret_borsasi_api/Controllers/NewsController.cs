@@ -23,7 +23,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllNews(int page, float limit)
+        public async Task<IActionResult> GetAllNews(int page = 1, float limit = 5)
         {
             var news = await _newsService.GetAllNews(page, limit);
             if (news == null) return BadRequest();
@@ -46,7 +46,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         {
             if (news.ImageFile != null)
             {
-                news.ImageName = await SaveImage(news.ImageFile);
+                news.ImageName = await SaveImage2(news.ImageFile);
             }
 
             var createdNews = await _newsService.CreateNews(news);
@@ -60,7 +60,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         {
             if (news.ImageFile != null)
             {
-                news.ImageName = await SaveImage(news.ImageFile);
+                news.ImageName = await SaveImage2(news.ImageFile);
             }
 
             var updatedNews = await _newsService.UpdateNews(news);
@@ -96,6 +96,21 @@ namespace aydin_ticaret_borsasi_api.Controllers
                 await file.CopyToAsync(fileStream);
             }
             return imageName;
+        }
+
+        [NonAction]
+        public async Task<string> SaveImage2(IFormFile file)
+        {
+            string trustedFileNameForFileStorage;
+            var untrustedFileName = new string(Path.GetFileNameWithoutExtension(file.FileName).Take(10).ToArray()).Replace(' ', '-');
+
+            trustedFileNameForFileStorage = untrustedFileName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(file.FileName);
+            var path = Path.Combine(_webHostEnvironment.ContentRootPath, "Images/News", trustedFileNameForFileStorage);
+
+            await using FileStream stream = new(path, FileMode.Create);
+            await file.CopyToAsync(stream);
+
+            return trustedFileNameForFileStorage;
         }
 
         [NonAction]
