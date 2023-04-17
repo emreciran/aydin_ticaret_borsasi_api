@@ -26,7 +26,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllAnnouncement(int page = 1, float limit = 5)
+        public async Task<IActionResult> GetAllAnnouncement(int page = 1, float limit = 10)
         {
             var announcement = await _announcementService.GetAllAnnouncement(page, limit);
             if (announcement == null) return BadRequest();
@@ -49,7 +49,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         {
             if (announcement.ImageFile != null)
             {
-                announcement.ImageName = await SaveImage2(announcement.ImageFile);
+                announcement.ImageName = await SaveImage(announcement.ImageFile);
             }
 
             var createdAnnouncement = await _announcementService.NewAnnouncement(announcement);
@@ -63,7 +63,8 @@ namespace aydin_ticaret_borsasi_api.Controllers
         {
             if (announcement.ImageFile != null)
             {
-                announcement.ImageName = await SaveImage2(announcement.ImageFile);
+                DeleteImage(announcement.ImageName);
+                announcement.ImageName = await SaveImage(announcement.ImageFile);
             }
 
             var updatedAnnouncement = await _announcementService.UpdateAnnouncement(announcement);
@@ -91,19 +92,6 @@ namespace aydin_ticaret_borsasi_api.Controllers
         [NonAction]
         public async Task<string> SaveImage(IFormFile file)
         {
-            string imageName = new string(Path.GetFileNameWithoutExtension(file.FileName).Take(10).ToArray()).Replace(' ', '-');
-            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(file.FileName);
-            var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images", imageName);
-            using (var fileStream = new FileStream(imagePath, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-            return imageName;
-        }
-
-        [NonAction]
-        public async Task<string> SaveImage2(IFormFile file)
-        {
             string trustedFileNameForFileStorage;
             var untrustedFileName = new string(Path.GetFileNameWithoutExtension(file.FileName).Take(10).ToArray()).Replace(' ', '-');
 
@@ -119,7 +107,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
         [NonAction]
         public void DeleteImage(string imageName)
         {
-            var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images", imageName);
+            var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images/Announcements", imageName);
             if (System.IO.File.Exists(imagePath))
                 System.IO.File.Delete(imagePath);
         }

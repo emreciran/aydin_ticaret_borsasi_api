@@ -99,13 +99,6 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-
-//app.UseStaticFiles(new StaticFileOptions()
-//{
-//    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Images")),
-//    RequestPath = "/Images"
-//});
-
 app.UseStaticFiles(new StaticFileOptions()
 {
     FileProvider = new PhysicalFileProvider(
