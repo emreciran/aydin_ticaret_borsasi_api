@@ -18,6 +18,8 @@ namespace DataAccessLayer.Context
         public DbSet<Announcement> Announcements { get; set; }
 
         public DbSet<News> News { get; set; }
+
+        public DbSet<Event> Events { get; set; }
     }
 }
 

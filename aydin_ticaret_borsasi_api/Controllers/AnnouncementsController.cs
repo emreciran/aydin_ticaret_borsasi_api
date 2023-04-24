@@ -44,7 +44,6 @@ namespace aydin_ticaret_borsasi_api.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> NewAnnouncement([FromForm]Announcement announcement)
         {
             if (announcement.ImageFile != null)
@@ -86,7 +85,7 @@ namespace aydin_ticaret_borsasi_api.Controllers
                 return Ok("Duyuru silindi");
             }
 
-            return BadRequest("Duyuru silindi!");
+            return BadRequest();
         }
 
         [NonAction]

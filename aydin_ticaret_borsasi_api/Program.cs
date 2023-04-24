@@ -86,6 +86,9 @@ builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
 builder.Services.AddScoped<INewsService, NewsManager>();
 builder.Services.AddScoped<INewsRepository, NewsRepository>();
 
+builder.Services.AddScoped<IEventService, EventManager>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+
 builder.Services.AddScoped<IRoleService, RoleManager>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
