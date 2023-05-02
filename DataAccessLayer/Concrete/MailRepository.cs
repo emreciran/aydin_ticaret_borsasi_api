@@ -25,7 +25,7 @@ namespace DataAccessLayer.Concrete
             var email = new MimeMessage();
             email.From.Add(new MailboxAddress("Test", _configuration["Email"]));
             email.To.Add(new MailboxAddress(toEmail, toEmail));
-            email.Subject = "E postanızı onaylayınız";
+            email.Subject = subject;
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = body };
 
             using var smtp = new SmtpClient();

@@ -12,9 +12,9 @@ namespace EntitiesLayer.Concrete
         [Key]
         public int ID { get; set; }
 
-        public string? Details { get; set; }
-
         public string? Title { get; set; }
+
+        public string? Details { get; set; }
 
         public bool Status { get; set; }
 

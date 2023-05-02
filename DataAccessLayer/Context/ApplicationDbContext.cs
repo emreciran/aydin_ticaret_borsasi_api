@@ -20,6 +20,8 @@ namespace DataAccessLayer.Context
         public DbSet<News> News { get; set; }
 
         public DbSet<Event> Events { get; set; }
+
+        public DbSet<RequestSuggestion> RequestSuggestions { get; set; }
     }
 }
 
