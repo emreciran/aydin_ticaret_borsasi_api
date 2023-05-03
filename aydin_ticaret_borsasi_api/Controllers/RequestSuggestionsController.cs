@@ -53,5 +53,26 @@ namespace aydin_ticaret_borsasi_api.Controllers
             if (updatedReqSugg == null) return BadRequest();
             return Ok(updatedReqSugg);
         }
+
+        [HttpPut("Reply")]
+        public async Task<IActionResult> ReplyRequestSuggestion(RequestSuggestion requestSuggestion)
+        {
+            var updatedReqSugg = await _requestSuggestionService.ReplyRequestSuggestion(requestSuggestion);
+            if (updatedReqSugg == null) return BadRequest();
+            return Ok(updatedReqSugg);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRequestSuggestion(int id)
+        {
+            var reqSugg = await GetById(id);
+            if (reqSugg != null)
+            {
+                await _requestSuggestionService.DeleteRequestSuggestion(id);
+                return Ok("Silindi!");
+            }
+
+            return BadRequest();
+        }
     }
 }

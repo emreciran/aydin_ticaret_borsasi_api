@@ -10,8 +10,6 @@ namespace DataAccessLayer.Abstract
 {
     public interface IRequestSuggestionRepository
     {
-        Task<RequestSuggestionResponse> SendRequestSuggestionEmail(string email);
-
         Task<RequestSuggestionResponse> GetAll(int page, float limit);
 
         Task<RequestSuggestion> GetById(int id);
@@ -19,5 +17,9 @@ namespace DataAccessLayer.Abstract
         Task<RequestSuggestion> NewRequestSuggestion(RequestSuggestion requestSuggestion);
 
         Task<RequestSuggestion> UpdateStatus(int id, bool status);
+
+        Task<RequestSuggestion> ReplyRequestSuggestion(RequestSuggestion requestSuggestion);
+
+        Task DeleteRequestSuggestion(int id);
     }
 }

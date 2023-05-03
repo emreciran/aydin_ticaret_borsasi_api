@@ -14,12 +14,20 @@ namespace EntitiesLayer.Concrete
 
         public string NameSurname { get; set; }
 
-        public string? Phone { get; set; }
+        public string Phone { get; set; }
 
         public string Email { get; set; }
 
         public string Message { get; set; }
 
         public bool Status { get; set; }
+
+        public string CreatedDate { get; set; }
+
+        public string ReplyBy { get; set; }
+
+        public string Reply { get; set; }
+
+        public string ReplyDate { get; set; }
     }
 }

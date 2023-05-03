@@ -19,6 +19,11 @@ namespace BusinessLayer.Concrete
             _requestSuggestionRepository = requestSuggestionRepository;
         }
 
+        public async Task DeleteRequestSuggestion(int id)
+        {
+            await _requestSuggestionRepository.DeleteRequestSuggestion(id);
+        }
+
         public async Task<RequestSuggestionResponse> GetAll(int page, float limit)
         {
             return await _requestSuggestionRepository.GetAll(page, limit);
@@ -34,9 +39,9 @@ namespace BusinessLayer.Concrete
             return await _requestSuggestionRepository.NewRequestSuggestion(requestSuggestion);
         }
 
-        public async Task<RequestSuggestionResponse> SendRequestSuggestionEmail(string email)
+        public async Task<RequestSuggestion> ReplyRequestSuggestion(RequestSuggestion requestSuggestion)
         {
-            throw new NotImplementedException();
+            return await _requestSuggestionRepository.ReplyRequestSuggestion(requestSuggestion);
         }
 
         public async Task<RequestSuggestion> UpdateStatus(int id, bool status)

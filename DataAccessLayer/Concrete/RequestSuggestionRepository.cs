@@ -23,6 +23,13 @@ namespace DataAccessLayer.Concrete
             _mailRepository = mailRepository;
         }
 
+        public async Task DeleteRequestSuggestion(int id)
+        {
+            var deletedReqSugg = await GetById(id);
+            db.RequestSuggestions.Remove(deletedReqSugg);
+            await db.SaveChangesAsync();
+        }
+
         public async Task<RequestSuggestionResponse> GetAll(int page, float limit)
         {
             if (db.RequestSuggestions == null)
@@ -75,9 +82,18 @@ namespace DataAccessLayer.Concrete
             return requestSuggestion;
         }
 
-        public async Task<RequestSuggestionResponse> SendRequestSuggestionEmail(string email)
+        public async Task<RequestSuggestion> ReplyRequestSuggestion(RequestSuggestion requestSuggestion)
         {
-            throw new NotImplementedException();
+            string subject = "Aydın Ticaret Borsası Talep/Öneri";
+            string body =
+                $"<h1>Aydın Ticaret Borsası</h1>" +
+                $"<p>Yanıt Mesajı: <span>{requestSuggestion.Reply}</span></p>";
+
+            await _mailRepository.SendEmailAsync(requestSuggestion.Email, subject, body);
+
+            db.RequestSuggestions.Update(requestSuggestion);
+            await db.SaveChangesAsync();
+            return requestSuggestion;
         }
 
         public async Task<RequestSuggestion> UpdateStatus(int id, bool status)
@@ -92,5 +108,6 @@ namespace DataAccessLayer.Concrete
 
             return null;
         }
+
     }
 }
