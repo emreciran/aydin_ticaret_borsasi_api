@@ -92,6 +92,9 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IRequestSuggestionService, RequestSuggestionManager>();
 builder.Services.AddScoped<IRequestSuggestionRepository,  RequestSuggestionRepository>();
 
+builder.Services.AddScoped<IWeeklyMarketCommentService, WeeklyMarketCommentManager>();
+builder.Services.AddScoped<IWeeklyMarketCommentRepository, WeeklyMarketCommentRepository>();
+
 builder.Services.AddScoped<IRoleService, RoleManager>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 

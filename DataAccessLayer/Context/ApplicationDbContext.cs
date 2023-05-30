@@ -22,6 +22,8 @@ namespace DataAccessLayer.Context
         public DbSet<Event> Events { get; set; }
 
         public DbSet<RequestSuggestion> RequestSuggestions { get; set; }
+
+        public DbSet<WeeklyMarketComment> WeeklyMarketComments { get; set; }
     }
 }
 
