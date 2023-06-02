@@ -122,6 +122,13 @@ app.UseStaticFiles(new StaticFileOptions()
     RequestPath = new PathString("/Images/News")
 });
 
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(Directory.GetCurrentDirectory(), @"Images", "WeeklyMarket")),
+    RequestPath = new PathString("/Images/WeeklyMarket")
+});
+
 app.UseDirectoryBrowser();
 
 app.UseHttpsRedirection();
