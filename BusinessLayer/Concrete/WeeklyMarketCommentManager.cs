@@ -34,6 +34,11 @@ namespace BusinessLayer.Concrete
             return await _weeklyMarketCommentRepository.GetById(id);
         }
 
+        public async Task<WeeklyMarketComment> GetByType(string type)
+        {
+            return await _weeklyMarketCommentRepository.GetByType(type);
+        }
+
         public async Task<WeeklyMarketComment> New(WeeklyMarketComment weeklyMarketComment)
         {
             return await _weeklyMarketCommentRepository.New(weeklyMarketComment);

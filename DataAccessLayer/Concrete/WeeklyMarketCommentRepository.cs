@@ -54,6 +54,14 @@ namespace DataAccessLayer.Concrete
             return response;
         }
 
+        public async Task<WeeklyMarketComment> GetByType(string type)
+        {
+            var weeklyMarketComment = await db.WeeklyMarketComments.Where(x => x.Type == type).OrderByDescending(x => x.ID).FirstOrDefaultAsync();
+            if (weeklyMarketComment != null) return weeklyMarketComment;
+
+            return null;
+        }
+
         public async Task<WeeklyMarketComment> GetById(int id)
         {
             var weeklyMarketComment = await db.WeeklyMarketComments.FindAsync(id);

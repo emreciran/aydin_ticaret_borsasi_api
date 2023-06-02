@@ -14,6 +14,8 @@ namespace DataAccessLayer.Abstract
 
         Task<WeeklyMarketComment> GetById(int id);
 
+        Task<WeeklyMarketComment> GetByType(string type);
+
         Task<WeeklyMarketComment> New(WeeklyMarketComment weeklyMarketComment);
 
         Task<WeeklyMarketComment> Update(WeeklyMarketComment weeklyMarketComment);

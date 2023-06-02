@@ -31,15 +31,26 @@ namespace aydin_ticaret_borsasi_api.Controllers
             return Ok(data);
         }
 
-        [HttpGet("{id}")]
+        //[HttpGet("{id}")]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> GetById(int id)
+        //{
+        //    var data = await _weeklyMarketCommentService.GetById(id);
+        //    if (data == null) return NotFound("Veri bulunamadı!");
+
+        //    return Ok(data);
+        //}
+
+        [HttpGet("{type}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetByType(string type)
         {
-            var data = await _weeklyMarketCommentService.GetById(id);
-            if (data == null) return NotFound("Duyuru bulunamadı!");
+            var data = await _weeklyMarketCommentService.GetByType(type);
+            if (data == null) return NotFound("Veri bulunamadı!");
 
             return Ok(data);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> New([FromForm] WeeklyMarketComment weeklyMarketComment)
